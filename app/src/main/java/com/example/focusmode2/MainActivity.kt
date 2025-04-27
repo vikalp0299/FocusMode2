@@ -35,18 +35,34 @@ class MainActivity : AppCompatActivity() {
         val startFocusButton: Button = findViewById(R.id.startFocusButton)
 
         startFocusButton.setOnClickListener {
-            val hours = hoursInput.text.toString().toIntOrNull() ?: 0
-            val minutes = minutesInput.text.toString().toIntOrNull() ?: 0
-            val seconds = secondsInput.text.toString().toIntOrNull() ?: 0
+            val hoursText = hoursInput.text.toString()
+            val minutesText = minutesInput.text.toString()
+            val secondsText = secondsInput.text.toString()
 
-            if (hours > 11 || minutes > 59 || seconds > 59) {
-                if (hours > 11){
-                    Toast.makeText(this,"Invalid input. Hours must be less than 11.", Toast.LENGTH_LONG).show()
-                }else if (minutes > 59){
-                    Toast.makeText(this,"Invalid input. Minutes must be less than 60.", Toast.LENGTH_LONG).show()
-                }else{
-                Toast.makeText(this, "Invalid input. Seconds must be less than 60.", Toast.LENGTH_LONG).show()
-                }
+            val hours = if (hoursText.isEmpty()) 0 else hoursText.toIntOrNull() ?: -1
+            val minutes = if (minutesText.isEmpty()) 0 else minutesText.toIntOrNull() ?: -1
+            val seconds = if (secondsText.isEmpty()) 0 else secondsText.toIntOrNull() ?: -1
+
+            val errors = mutableListOf<String>()
+
+            if (hoursText.contains(".") || minutesText.contains(".") || secondsText.contains(".")) {
+                errors.add("Inputs must be whole numbers.")
+            }
+            if (hours < 0 || minutes < 0 || seconds < 0) {
+                errors.add("Inputs must be non-negative.")
+            }
+            if (hours > 11) {
+                errors.add("Hours must be less than 11.")
+            }
+            if (minutes > 59) {
+                errors.add("Minutes must be less than 60.")
+            }
+            if (seconds > 59) {
+                errors.add("Seconds must be less than 60.")
+            }
+
+            if (errors.isNotEmpty()) {
+                Toast.makeText(this, errors.joinToString("\n"), Toast.LENGTH_LONG).show()
             } else {
                 val focusEndTime = clock.getFocusEndTime(hours, minutes, seconds)
                 Toast.makeText(this, "The phone will be in focus mode till $focusEndTime", Toast.LENGTH_LONG).show()
