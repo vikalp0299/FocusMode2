@@ -11,11 +11,13 @@ class Clock {
         return dateFormat.format(Date())
     }
 
-    fun getFocusEndTime(): String {
+    fun getFocusEndTime(hours: Int, minutes: Int, seconds: Int): String {
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.HOUR, 1)
+        calendar.add(Calendar.HOUR, hours)
+        calendar.add(Calendar.MINUTE, minutes)
+        calendar.add(Calendar.SECOND, seconds)
+
         val dateFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         return dateFormat.format(calendar.time)
     }
 }
-

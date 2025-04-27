@@ -6,6 +6,7 @@ import android.os.Looper
 import android.widget.TextView
 import android.widget.Button
 import android.widget.Toast
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -28,10 +29,28 @@ class MainActivity : AppCompatActivity() {
         val currentTimeTextView: TextView = findViewById(R.id.currentTimeTextView)
         updateTime(currentTimeTextView)
 
+        val hoursInput: EditText = findViewById(R.id.hoursInput)
+        val minutesInput: EditText = findViewById(R.id.minutesInput)
+        val secondsInput: EditText = findViewById(R.id.secondsInput)
         val startFocusButton: Button = findViewById(R.id.startFocusButton)
+
         startFocusButton.setOnClickListener {
-            val focusEndTime = clock.getFocusEndTime()
-            Toast.makeText(this, "The phone will be in focus mode till $focusEndTime", Toast.LENGTH_LONG).show()
+            val hours = hoursInput.text.toString().toIntOrNull() ?: 0
+            val minutes = minutesInput.text.toString().toIntOrNull() ?: 0
+            val seconds = secondsInput.text.toString().toIntOrNull() ?: 0
+
+            if (hours > 11 || minutes > 59 || seconds > 59) {
+                if (hours > 11){
+                    Toast.makeText(this,"Invalid input. Hours must be less than 11.", Toast.LENGTH_LONG).show()
+                }else if (minutes > 59){
+                    Toast.makeText(this,"Invalid input. Minutes must be less than 60.", Toast.LENGTH_LONG).show()
+                }else{
+                Toast.makeText(this, "Invalid input. Seconds must be less than 60.", Toast.LENGTH_LONG).show()
+                }
+            } else {
+                val focusEndTime = clock.getFocusEndTime(hours, minutes, seconds)
+                Toast.makeText(this, "The phone will be in focus mode till $focusEndTime", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -40,4 +59,3 @@ class MainActivity : AppCompatActivity() {
         handler.postDelayed({ updateTime(textView) }, 1000)
     }
 }
-
