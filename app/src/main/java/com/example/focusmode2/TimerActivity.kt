@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import android.app.ActivityManager
 
 class TimerActivity : AppCompatActivity() {
     private var countdownTimer: CountDownTimer? = null
@@ -15,6 +17,16 @@ class TimerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
+
+        // Enable lock task mode
+        startLockTask()
+
+        // Disable back press
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Toast.makeText(this@TimerActivity, "You cannot leave until the timer runs down.", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         val timerTextView: TextView = findViewById(R.id.timerTextView)
         val totalMillis = intent.getLongExtra("TIMER_DURATION", 0L)
@@ -53,6 +65,10 @@ class TimerActivity : AppCompatActivity() {
             override fun onFinish() {
                 timerTextView.text = "00:00:00"
                 Toast.makeText(this@TimerActivity, "Focus mode ended!", Toast.LENGTH_LONG).show()
+
+                // Disable lock task mode
+                stopLockTask()
+
                 val intent = Intent(this@TimerActivity, MainActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -64,5 +80,8 @@ class TimerActivity : AppCompatActivity() {
         super.onDestroy()
         countdownTimer?.cancel()
         preTimer?.cancel()
+
+        // Ensure lock task mode is disabled if the activity is destroyed
+        stopLockTask()
     }
 }

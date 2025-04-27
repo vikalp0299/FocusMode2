@@ -21,7 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TimerActivity" />
+        <activity
+            android:name=".TimerActivity"
+            android:taskAffinity=""
+            android:launchMode="singleTask"
+            android:allowTaskReparenting="true"
+            android:lockTaskMode="if_whitelisted" />
     </application>
 
 </manifest>
