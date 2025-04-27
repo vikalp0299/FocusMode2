@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.TextView
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -25,6 +27,12 @@ class MainActivity : AppCompatActivity() {
 
         val currentTimeTextView: TextView = findViewById(R.id.currentTimeTextView)
         updateTime(currentTimeTextView)
+
+        val startFocusButton: Button = findViewById(R.id.startFocusButton)
+        startFocusButton.setOnClickListener {
+            val focusEndTime = clock.getFocusEndTime()
+            Toast.makeText(this, "The phone will be in focus mode till $focusEndTime", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun updateTime(textView: TextView) {
@@ -32,3 +40,4 @@ class MainActivity : AppCompatActivity() {
         handler.postDelayed({ updateTime(textView) }, 1000)
     }
 }
+
