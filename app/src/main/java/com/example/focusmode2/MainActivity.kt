@@ -3,6 +3,7 @@ package com.example.focusmode2
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.CountDownTimer
 import android.widget.TextView
 import android.widget.Button
 import android.widget.Toast
@@ -11,6 +12,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import android.content.Intent
 
 class MainActivity : AppCompatActivity() {
     private val clock = Clock()
@@ -64,8 +66,10 @@ class MainActivity : AppCompatActivity() {
             if (errors.isNotEmpty()) {
                 Toast.makeText(this, errors.joinToString("\n"), Toast.LENGTH_LONG).show()
             } else {
-                val focusEndTime = clock.getFocusEndTime(hours, minutes, seconds)
-                Toast.makeText(this, "The phone will be in focus mode till $focusEndTime", Toast.LENGTH_LONG).show()
+                val totalMillis = (hours * 3600 + minutes * 60 + seconds) * 1000L
+                val intent = Intent(this, TimerActivity::class.java)
+                intent.putExtra("TIMER_DURATION", totalMillis)
+                startActivity(intent)
             }
         }
     }

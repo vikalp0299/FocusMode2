@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -39,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="140dp"
         android:layout_marginEnd="50dp"
+        android:autofillHints="00"
         android:hint="Hours"
         android:inputType="number"
         app:layout_constraintEnd_toStartOf="@+id/minutesInput"
@@ -51,6 +53,7 @@
         android:layout_marginTop="140dp"
         android:hint="Minutes"
         android:inputType="number"
+        android:autofillHints="00"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/currentTimeTextView" />
@@ -62,6 +65,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="140dp"
         android:hint="Seconds"
+        android:autofillHints="00"
         android:inputType="number"
         app:layout_constraintStart_toEndOf="@+id/minutesInput"
         app:layout_constraintTop_toBottomOf="@+id/currentTimeTextView" />
